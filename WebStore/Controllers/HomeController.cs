@@ -17,7 +17,8 @@ namespace WebStore.Controllers
                 FirstName = "Иван",
                 SurName = "Иванов",
                 Patronymic = "Иванович",
-                Age = 22
+                Age = 22,
+                Position = "IT"
             },
             new EmployeeView
             {
@@ -25,7 +26,8 @@ namespace WebStore.Controllers
                 FirstName = "Владислав",
                 SurName = "Петров",
                 Patronymic = "Иванович",
-                Age = 35
+                Age = 35,
+                Position = "HR"
             }
         };
 
@@ -34,6 +36,18 @@ namespace WebStore.Controllers
         {
             //return Content("Hello from controller!");
             return View(_employees);
+        }
+
+        public IActionResult Details(int id)
+        {
+            var employee = _employees.FirstOrDefault(x => x.Id == id);
+
+            if (employee == null)
+            {
+                return NotFound();
+            }
+
+            return View(employee);
         }
     }
 }
