@@ -35,6 +35,8 @@ namespace WebStore
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles(); //Задействуем статические ресурсы (папка wwwroot)
+
             var helloMessage = _configuration["CustomHelloWorld"];
             var logLevel = _configuration["Logging:LogLevel:Microsoft"];
 

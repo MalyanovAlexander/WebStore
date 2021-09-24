@@ -1,25 +1,22 @@
-﻿@model IEnumerable<WebStore.Models.EmployeeView>
+﻿@model IEnumerable<EmployeeView>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>Привет из представления!</p>
-
-<table>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>@item.FirstName</td>
-            <td>@item.SurName</td>
-            <td>@item.Patronymic</td>
-            @*<td><a asp-action="Details" asp-route="@item.Id">Детали</a></td>*@
-            <td>
-                @Html.ActionLink("Детали", "Details", new { id = item.Id})
-            </td>
-        </tr>
-    }
-</table>
-
+<div class="container">
+    <table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.FirstName</td>
+                <td>@item.SurName</td>
+                <td>@item.Patronymic</td>
+                @*<td><a asp-action="Details" asp-route="@item.Id">Детали</a></td>*@
+                <td>
+                    @Html.ActionLink("Детали", "Details", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </table>
+</div>
