@@ -37,6 +37,12 @@ namespace WebStore
 
             app.UseStaticFiles(); //Задействуем статические ресурсы (папка wwwroot)
 
+            app.UseWelcomePage("/welcome");
+
+            app.Map("/index", CustomIndexHandler);
+
+            UseSample(app);
+
             var helloMessage = _configuration["CustomHelloWorld"];
             var logLevel = _configuration["Logging:LogLevel:Microsoft"];
 
@@ -47,6 +53,45 @@ namespace WebStore
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+                endpoints.MapGet("/hello", async context =>
+                {
+                    await context.Response.WriteAsync(helloMessage);
+                });
+            });
+
+            app.Run(async (context) =>
+            {
+                await context.Response.WriteAsync("Мы дошли до финиша конвейера");
+            });
+        }
+
+        /// <summary>
+        /// Кастомный фильтр
+        /// </summary>
+        /// <param name="app"></param>
+        private void UseSample(IApplicationBuilder app)
+        {
+            app.Use(async (context, next) =>
+            {
+                bool isError = false;
+                if (isError)
+                {
+                    await context.Response.WriteAsync("Error occured bla bla bla...");
+                }
+                else
+                {
+                    await next.Invoke();
+                }
+            });
+            
+        }
+
+        private void CustomIndexHandler(IApplicationBuilder app)
+        {
+            app.Run(async context =>
+            {
+                await context.Response.WriteAsync("Hello from custom /Index handler");
             });
         }
     }
