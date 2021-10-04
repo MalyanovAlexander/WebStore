@@ -8,6 +8,7 @@ namespace WebStore.Controllers
 {
     public class HomeController : Controller
     {
+        [SimpleActionFilter]
         public IActionResult Index()
         {
             //throw new ApplicationException("Ooooops...");
@@ -22,7 +23,7 @@ namespace WebStore.Controllers
             //return StatusCode(500);
             return View();
         }
-
+        
         public IActionResult Blog()
         {
             return View();

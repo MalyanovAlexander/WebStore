@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebStore.Controllers;
 
 namespace WebStore
 {
@@ -24,7 +25,12 @@ namespace WebStore
         public void ConfigureServices(IServiceCollection services)
         {
             //Добавляем сервисы, необходимые для MVC
-            services.AddMvc();
+            services.AddMvc(options => 
+            {
+                options.Filters.Add(typeof(SimpleActionFilter));    //подключение по типу
+                //альтернативный вариант подключения
+                //options.Filters.Add(new SimpleActionFilter());      //подключение по объекту
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,7 +46,7 @@ namespace WebStore
             app.UseWelcomePage("/welcome");
 
             app.Map("/index", CustomIndexHandler);
-
+            
             UseSample(app);
 
             var helloMessage = _configuration["CustomHelloWorld"];
@@ -60,11 +66,12 @@ namespace WebStore
                 });
             });
 
-            app.Run(async (context) =>
-            {
-                await context.Response.WriteAsync("Мы дошли до финиша конвейера");
-            });
-        }
+            //После Run ничего выполняться не будет, т.к. у Run нет делегата next
+            //app.Run(async (context) =>
+            //{
+            //    await context.Response.WriteAsync("Мы дошли до финиша конвейера");
+            //});
+        }        
 
         /// <summary>
         /// Кастомный фильтр
@@ -85,7 +92,7 @@ namespace WebStore
                 }
             });
             
-        }
+        }        
 
         private void CustomIndexHandler(IApplicationBuilder app)
         {
