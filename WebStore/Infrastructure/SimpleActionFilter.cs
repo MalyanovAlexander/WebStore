@@ -8,13 +8,13 @@ namespace WebStore.Controllers
         public void OnActionExecuting(ActionExecutingContext context)
         {
             //предобработка
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public void OnActionExecuted(ActionExecutedContext context)
         {
             //постобработка
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         
