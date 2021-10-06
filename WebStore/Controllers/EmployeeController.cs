@@ -42,5 +42,55 @@ namespace WebStore.Controllers
 
             return View(employee);
         }
+
+        /// <summary>
+        /// Открыть страницу для редактирование сотрудника
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("edit/{id}")]
+        public IActionResult Edit(int? id)
+        {
+            if (!id.HasValue)
+                return View(new EmployeeView());
+
+            EmployeeView model = _employeesService.GetById(id.Value);
+            if (model == null)
+                return NotFound(); //возвращаем результат 404 not found
+
+            return View(model);
+        }
+
+        /// <summary>
+        /// Сохранить изменения
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("edit/{id}")]
+        public IActionResult Edit(EmployeeView model)
+        {
+            if (model.Id > 0)           //если есть id, то редактируем модель
+            {
+                var dbItem = _employeesService.GetById(model.Id);
+
+                if (ReferenceEquals(dbItem, null))
+                    return NotFound();  // возвращаем результат 404 Not Found
+
+                dbItem.FirstName = model.FirstName;
+                dbItem.SurName = model.SurName;
+                dbItem.Age = model.Age;
+                dbItem.Patronymic = model.Patronymic;
+                dbItem.Position = model.Position;
+            }
+            else                        //иначе добавляем модель в список
+            {
+                _employeesService.AddNew(model);
+            }
+            _employeesService.Commit(); //станет актуальным когда добавим БД
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }
