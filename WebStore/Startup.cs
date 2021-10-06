@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebStore.Controllers;
+using WebStore.Infrastructure.Implementations;
+using WebStore.Infrastructure.Interfaces;
 
 namespace WebStore
 {
@@ -25,12 +27,17 @@ namespace WebStore
         public void ConfigureServices(IServiceCollection services)
         {
             //Добавляем сервисы, необходимые для MVC
-            services.AddMvc(options => 
+            services.AddMvc(options =>
             {
                 options.Filters.Add(typeof(SimpleActionFilter));    //подключение по типу
                 //альтернативный вариант подключения
                 //options.Filters.Add(new SimpleActionFilter());      //подключение по объекту
             });
+
+            //Добавляем разрешение зависимости
+            services.AddSingleton<IEmployeesService, InMemoryEmployeeService>();
+            //services.AddTransient<IEmployeesService, InMemoryEmployeeService>();
+            //services.AddScoped<IEmployeesService, InMemoryEmployeeService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,7 +53,7 @@ namespace WebStore
             app.UseWelcomePage("/welcome");
 
             app.Map("/index", CustomIndexHandler);
-            
+
             UseSample(app);
 
             var helloMessage = _configuration["CustomHelloWorld"];
@@ -71,7 +78,7 @@ namespace WebStore
             //{
             //    await context.Response.WriteAsync("Мы дошли до финиша конвейера");
             //});
-        }        
+        }
 
         /// <summary>
         /// Кастомный фильтр
@@ -91,8 +98,8 @@ namespace WebStore
                     await next.Invoke();
                 }
             });
-            
-        }        
+
+        }
 
         private void CustomIndexHandler(IApplicationBuilder app)
         {

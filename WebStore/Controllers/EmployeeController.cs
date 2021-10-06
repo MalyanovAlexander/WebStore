@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebStore.Infrastructure.Interfaces;
 using WebStore.Models;
 
 namespace WebStore.Controllers
@@ -12,27 +13,11 @@ namespace WebStore.Controllers
     //users
     public class EmployeeController : Controller
     {
-        private readonly List<EmployeeView> _employees = new List<EmployeeView>
+        private readonly IEmployeesService _employeesService;
+        public EmployeeController(IEmployeesService employeesService)
         {
-            new EmployeeView
-            {
-                Id = 1,
-                FirstName = "Иван",
-                SurName = "Иванов",
-                Patronymic = "Иванович",
-                Age = 22,
-                Position = "IT"
-            },
-            new EmployeeView
-            {
-                Id = 2,
-                FirstName = "Владислав",
-                SurName = "Петров",
-                Patronymic = "Иванович",
-                Age = 35,
-                Position = "HR"
-            }
-        };
+            _employeesService = employeesService;
+        }
 
         //employee/index
         [Route("all")]
@@ -40,7 +25,7 @@ namespace WebStore.Controllers
         public IActionResult Index()
         {
             //return Content("Hello from controller!");
-            return View(_employees);
+            return View(_employeesService.GetAll());
         }
 
         //employee/details/id
@@ -48,7 +33,7 @@ namespace WebStore.Controllers
         //users/id
         public IActionResult Details(int id)
         {
-            var employee = _employees.FirstOrDefault(x => x.Id == id);
+            var employee = _employeesService.GetById(id);
 
             if (employee == null)
             {
