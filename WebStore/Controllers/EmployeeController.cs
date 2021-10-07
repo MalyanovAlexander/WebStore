@@ -49,7 +49,7 @@ namespace WebStore.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet]
-        [Route("edit/{id}")]
+        [Route("edit/{id?}")]
         public IActionResult Edit(int? id)
         {
             if (!id.HasValue)
@@ -68,7 +68,7 @@ namespace WebStore.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        [Route("edit/{id}")]
+        [Route("edit/{id?}")]
         public IActionResult Edit(EmployeeView model)
         {
             if (model.Id > 0)           //если есть id, то редактируем модель
