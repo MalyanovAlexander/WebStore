@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebStore.Controllers;
+using WebStore.Infrastructure;
 using WebStore.Infrastructure.Implementations;
 using WebStore.Infrastructure.Interfaces;
 
@@ -53,6 +54,8 @@ namespace WebStore
             app.UseWelcomePage("/welcome");
 
             app.Map("/index", CustomIndexHandler);
+
+            app.UseMiddleware<TokenMiddleware>();
 
             UseSample(app);
 
