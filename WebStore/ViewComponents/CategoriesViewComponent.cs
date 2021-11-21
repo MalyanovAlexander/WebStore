@@ -1,0 +1,67 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using WebStore.Infrastructure.Interfaces;
+using WebStore.Models;
+
+namespace WebStore.ViewComponents
+{
+    [ViewComponent(Name = "Cats")]
+    public class CategoriesVewComponent : ViewComponent
+    {
+        private readonly IProductService _productService;
+
+        public CategoriesVewComponent(IProductService productService)
+        {
+            _productService = productService;
+        }
+
+        public async Task<IViewComponentResult> InvokeAsync()
+        {
+            var categories = GetCategories();
+            return View(categories);
+        }
+
+        private List<CategoryViewModel> GetCategories()
+        {
+            var categories = _productService.GetCategories();
+
+            var parentSections = categories.Where(p => !p.ParentID.HasValue).ToArray();
+            var parentCategories = new List<CategoryViewModel>();
+
+            //получим и заполним родительские категории
+            foreach (var parentCategory in parentSections)
+            {
+                parentCategories.Add(new CategoryViewModel()
+                {
+                    ID = parentCategory.ID,
+                    Name = parentCategory.Name,
+                    Order = parentCategory.Order,
+                    ParentCategory = null
+                });
+            }
+
+            //получим и заполним дочерние категории
+            foreach (var CategoryViewModel in parentCategories)
+            {
+                var childCategories = categories.Where(c => c.ParentID == CategoryViewModel.ID);
+                foreach (var childCategory in childCategories)
+                {
+                    CategoryViewModel.ChildCategories.Add(new CategoryViewModel()
+                    {
+                        ID = childCategory.ID,
+                        Name = childCategory.Name,
+                        Order = childCategory.Order,
+                        ParentCategory = CategoryViewModel
+                    });
+                }
+                CategoryViewModel.ChildCategories = CategoryViewModel.ChildCategories.OrderBy(c => c.Order).ToList();
+            }
+
+            parentCategories = parentCategories.OrderBy(c => c.Order).ToList();
+            return parentCategories;
+
+        }
+    }
+}
