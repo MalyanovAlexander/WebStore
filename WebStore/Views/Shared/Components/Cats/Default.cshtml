@@ -1,9 +1,9 @@
-﻿@model System.Collections.Generic.List<WebStore.Models.CategoryViewModel>
+﻿@model IEnumerable<WebStore.Models.CategoryViewModel>
 
-     <h2>Категории</h2>
-    <div class="panel-group category-products" id="accordian">
-        <!--category-productsr-->
-       @foreach (var parentCategory in Model)
+<h2>Категории</h2>
+<div class="panel-group category-products" id="accordian">
+    <!--category-products-->
+    @foreach (var parentCategory in Model)
     {
         if (parentCategory.ChildCategories.Count > 0)
         {
@@ -19,9 +19,13 @@
                 <div id="@parentCategory.Name.ToLower()" class="panel-collapse collapse">
                     <div class="panel-body">
                         <ul>
-                            @foreach (var childSection in parentCategory.ChildCategories)
+                            @foreach (var childCategory in parentCategory.ChildCategories)
                             {
-                                <li><a href="#">@childSection.Name </a></li>
+                                <li>
+                                    <a asp-controller="Catalog" 
+                                    asp-action="Shop" 
+                                    asp-route-categoryId="@childCategory.ID" 
+                                >@childCategory.Name </a></li>
                             }
                         </ul>
                     </div>
@@ -32,9 +36,13 @@
         {
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4 class="panel-title"><a href="#">@parentCategory.Name</a></h4>
+                    <h4 class="panel-title">
+                        <a asp-controller="Catalog" 
+                        asp-action="Shop" 
+                        asp-route-categoryId="@parentCategory.ID">
+                        @parentCategory.Name</a></h4>
                 </div>
             </div>
         }
-    }   
-    </div>
+    }    
+</div><!--/category-products-->

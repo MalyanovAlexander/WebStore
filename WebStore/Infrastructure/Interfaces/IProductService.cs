@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebStore.Domain.Entities.Base;
+using WebStore.Domain.Entities;
+using WebStore.Domain.Filters;
 
 namespace WebStore.Infrastructure.Interfaces
 {
@@ -11,5 +12,7 @@ namespace WebStore.Infrastructure.Interfaces
         IEnumerable<Category> GetCategories();
 
         IEnumerable<Brand> GetBrands();
+
+        IEnumerable<Product> GetProducts(ProductFilter filter);
     }
 }
