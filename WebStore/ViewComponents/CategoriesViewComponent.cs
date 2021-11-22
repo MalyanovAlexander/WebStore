@@ -35,7 +35,7 @@ namespace WebStore.ViewComponents
             {
                 parentCategories.Add(new CategoryViewModel()
                 {
-                    ID = parentCategory.ID,
+                    Id = parentCategory.Id,
                     Name = parentCategory.Name,
                     Order = parentCategory.Order,
                     ParentCategory = null
@@ -45,12 +45,12 @@ namespace WebStore.ViewComponents
             //получим и заполним дочерние категории
             foreach (var CategoryViewModel in parentCategories)
             {
-                var childCategories = categories.Where(c => c.ParentID == CategoryViewModel.ID);
+                var childCategories = categories.Where(c => c.ParentID == CategoryViewModel.Id);
                 foreach (var childCategory in childCategories)
                 {
                     CategoryViewModel.ChildCategories.Add(new CategoryViewModel()
                     {
-                        ID = childCategory.ID,
+                        Id = childCategory.Id,
                         Name = childCategory.Name,
                         Order = childCategory.Order,
                         ParentCategory = CategoryViewModel

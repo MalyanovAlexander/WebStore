@@ -11,7 +11,7 @@ namespace WebStore.Models
         }
 
         public string Name { get; set; }
-        public int ID { get; set; }
+        public int Id { get; set; }
         public int Order { get; set; }
         public List<CategoryViewModel> ChildCategories { get; set; }
         public CategoryViewModel ParentCategory { get; set; }

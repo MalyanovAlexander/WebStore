@@ -7,6 +7,6 @@ namespace WebStore.Domain.Entities.Base
 {
     public abstract class BaseEntity : IBaseEntity
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
     }
 }
