@@ -12,6 +12,7 @@ namespace WebStore.DAL
     {
         public static void Initialize(WebStoreContext context)
         {
+            //context.Database.EnsureDeleted();
             context.Database.EnsureCreated();
 
             if (context.Products.Any())
