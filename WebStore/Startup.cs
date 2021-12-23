@@ -68,7 +68,7 @@ namespace WebStore
                 // User settings
                 options.User.RequireUniqueEmail = true;
             });
-            
+
             //services.ConfigureApplicationCookie(options =>    //необязательно
             //{
             //    // Cookie settings
@@ -79,6 +79,9 @@ namespace WebStore
             //    //options.AccessDeniedPath = "/Account/AccessDenied"; // If the AccessDeniedPath is not set here, ASP.NET Core will default to /Account/AccessDenied
             //    options.SlidingExpiration = true;
             //});
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddScoped<ICartService, CookieCartService>();
         }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
