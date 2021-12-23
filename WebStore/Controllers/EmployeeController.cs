@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace WebStore.Controllers
     //employee
     [Route("users")]
     //users
+    [Authorize]
     public class EmployeeController : Controller
     {
         private readonly IEmployeesService _employeesService;
@@ -22,6 +24,7 @@ namespace WebStore.Controllers
         //employee/index
         [Route("all")]
         //users/all
+        [AllowAnonymous]
         public IActionResult Index()
         {
             //return Content("Hello from controller!");
@@ -50,6 +53,7 @@ namespace WebStore.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("edit/{id?}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(int? id)
         {
             if (!id.HasValue)
@@ -69,6 +73,7 @@ namespace WebStore.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("edit/{id?}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(EmployeeView model)
         {
             if (model.Age < 18 || model.Age > 100)
@@ -109,6 +114,7 @@ namespace WebStore.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [Route("delete/{id}")]
+        [Authorize(Roles = "Admin")]
         public IActionResult Delete(int id)
         {
             _employeesService.Delete(id);
