@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Text;
 using WebStore.DomainNew.Entities;
 
+
 namespace WebStore.DAL
 {
     public class WebStoreContext : IdentityDbContext<User>
@@ -19,5 +20,9 @@ namespace WebStore.DAL
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Brand> Brands { get; set; }
+
+        public DbSet<Order> Orders { get; set; }
+
+        public DbSet<OrderItem> OrderItems { get; set; }
     }
 }
